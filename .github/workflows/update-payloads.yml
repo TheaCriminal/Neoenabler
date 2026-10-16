@@ -1,0 +1,68 @@
+name: Update payloads.json
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # check hourly
+  workflow_dispatch:       # lets you run it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build payloads.json from the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SRC_REPO: gasb07/NeoEnabler
+          ASSET: neo-manager.elf
+        run: |
+          set -euo pipefail
+
+          rel=$(gh api "repos/$SRC_REPO/releases/latest")
+          tag=$(jq -r .tag_name <<<"$rel")
+          url=$(jq -r --arg a "$ASSET" '.assets[] | select(.name==$a) | .browser_download_url' <<<"$rel")
+
+          if [ -z "$url" ]; then
+            echo "Asset $ASSET not found in release $tag" >&2
+            exit 1
+          fi
+
+          curl -fsSL "$url" -o "$ASSET"
+          sha=$(sha256sum "$ASSET" | cut -d' ' -f1)
+          rm "$ASSET"
+
+          jq -n \
+            --arg tag "$tag" \
+            --arg url "$url" \
+            --arg sha "$sha" \
+            --arg file "$ASSET" \
+            '{
+              name: "NeoEnabler",
+              payloads: [{
+                name: "NeoEnabler",
+                filename: $file,
+                url: $url,
+                description: "Runs PS4 games that lack PS4 Pro support in Pro mode, with per-game patches, optional 8 GiB memory and a GPU clock tab. Needs ps-patch-system loaded first. Web panel on port 8765.",
+                version: $tag,
+                category: "Utilities",
+                checksum: $sha
+              }]
+            }' > payloads.json
+
+          cat payloads.json
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet; then
+            echo "No new release."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add payloads.json
+          git commit -m "Update NeoEnabler payload"
+          git push
