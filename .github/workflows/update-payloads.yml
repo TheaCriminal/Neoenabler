@@ -2,8 +2,8 @@ name: Update payloads.json
 
 on:
   schedule:
-    - cron: "0 * * * *"   # check hourly
-  workflow_dispatch:       # lets you run it manually from the Actions tab
+    - cron: "0 * * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -55,7 +55,7 @@ jobs:
 
           cat payloads.json
 
-           - name: Commit if changed
+      - name: Commit if changed
         run: |
           git add payloads.json
           if git diff --cached --quiet; then
