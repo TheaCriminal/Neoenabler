@@ -4,11 +4,11 @@
     {
       "name": "NeoEnabler",
       "filename": "neo-manager.elf",
-      "url": "https://github.com/gasb07/NeoEnabler/releases/download/v0.3.3/neo-manager.elf",
+      "url": "https://github.com/gasb07/NeoEnabler/releases/download/v0.3.4/neo-manager.elf",
       "description": "Runs PS4 games that lack PS4 Pro support in Pro mode, with per-game patches, optional 8 GiB memory and a GPU clock tab. Needs ps-patch-system loaded first. Web panel on port 8765.",
-      "version": "v0.3.3",
+      "version": "v0.3.4",
       "category": "Utilities",
-      "checksum": "380acb4cb1232b6d84985c85af432b2c5026d1d4cd35a25394d7976e2e366195"
+      "checksum": "92c624d96fa0350c9a45a0c66e890536f37a72a6c5f9421e07039368c05ae961"
     }
   ]
 }
