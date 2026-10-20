@@ -8,7 +8,7 @@
       "description": "Runs PS4 games that lack PS4 Pro support in Pro mode, with per-game patches, optional 8 GiB memory and a GPU clock tab. Needs ps-patch-system loaded first. Web panel on port 8765.",
       "version": "v0.3.5",
       "category": "Utilities",
-      "checksum": "aeb47cb2462a7312aea67302f7977508cdc46dc99c9b11a5ce6c28cdf3934aa0"
+      "checksum": "65b7c27645fa54f2f7d5028236f7f413c08b0e28ce522011e3e3d6f268b30116"
     }
   ]
 }
